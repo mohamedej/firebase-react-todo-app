@@ -63,7 +63,7 @@ const Todo = ({ todo }) => {
                 )}
 
                 {open ? (
-                    <Button variant="contained" onClick={setOpen(false)}>
+                    <Button variant="contained" onClick={() => setOpen(false)}>
                         Cancel
                     </Button>
                 ) : (
