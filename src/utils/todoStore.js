@@ -12,11 +12,11 @@ export const todoStore = create((set, get) => ({
     setLoading: (v) => set({ loading: v }),
     open: false,
     setOpen: (v) => set({ open: v }),
-    addTodo: (e, input, deadLine) => {
-        e.preventDefault()
+    addTodo: (uid) => {
         db.collection('todos').add({
             todo: get().input,
             deadline: get().deadLine,
+            uid,
         })
         set({ input: '' })
         set({ deadLine: '' })

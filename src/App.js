@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { authStore } from './utils/authStore'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import TodoBody from './components/Todo/Body'
 import { todoStore } from './utils/todoStore'
 import { auth, db } from './utils/firebase'
+import { CircularProgress } from '@material-ui/core'
 
 function App({ toggleTheme, theme, setTheme }) {
-    const { isLoggedIn, setLoggedIn } = authStore((state) => state)
+    const { setLoggedIn, setUser, user } = authStore((state) => state)
     const { loading, setLoading, todos, setTodos } = todoStore((state) => state)
 
     useEffect(() => {
@@ -16,6 +17,7 @@ function App({ toggleTheme, theme, setTheme }) {
         auth.onAuthStateChanged((user) => {
             if (user) {
                 setLoggedIn(true)
+                setUser(user)
             } else {
                 setLoggedIn(false)
             }
@@ -31,10 +33,10 @@ function App({ toggleTheme, theme, setTheme }) {
             setTodos(todos)
         })
         return unsubscribe
-    }, [setLoading, setLoggedIn, setTheme, setTodos])
+    }, [setLoading, setLoggedIn, setTheme, setTodos, setUser])
 
-    if (!loading && !isLoggedIn) {
-        return <Redirect to="/signin" />
+    if (loading) {
+        return <CircularProgress />
     }
 
     return (

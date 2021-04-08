@@ -32,7 +32,7 @@ export const authStore = create((set, get) => ({
                 .then((userCredential) => {
                     set({ user: userCredential.user })
                     set({ isLoggedIn: true })
-                    rej()
+                    res()
                 })
                 .catch((err) => {
                     console.log(err)

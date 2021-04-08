@@ -12,6 +12,8 @@ import { grey } from '@material-ui/core/colors'
 import { Brightness2Rounded, Brightness4Outlined } from '@material-ui/icons'
 import { auth } from '../../utils/firebase'
 import Todo from '.'
+import { authStore } from '../../utils/authStore'
+import { Redirect } from 'react-router'
 
 const useStyles = makeStyles((theme) => ({
     box: {
@@ -52,11 +54,18 @@ export default function TodoBody({ toggleTheme, theme, todos }) {
     const { input, setInput, deadLine, addTodo, setDeadline } = todoStore(
         (state) => state
     )
+    const user = authStore((state) => state.user)
+    const isLoggedIn = authStore((state) => state.isLoggedIn)
 
     const classes = useStyles()
+
+    if (!isLoggedIn) {
+        return <Redirect to="/signin" />
+    }
     return (
         <div className={`App ${classes.todoContainer}`}>
             <div>
+                {`hello ${user?.uid}`}
                 <Button
                     onClick={() => {
                         auth.signOut()
@@ -121,8 +130,9 @@ export default function TodoBody({ toggleTheme, theme, todos }) {
                             <Button
                                 disabled={!deadLine || !input}
                                 variant="contained"
-                                type="submit"
-                                onClick={addTodo}
+                                onClick={() => {
+                                    addTodo(user.uid)
+                                }}
                                 color="primary"
                             >
                                 Add Todo
