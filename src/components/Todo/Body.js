@@ -48,12 +48,22 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         marginBottom: theme.spacing(2),
     },
+    logOut: {
+        position: 'absolute',
+        top: theme.spacing(1),
+        left: theme.spacing(1),
+    },
 }))
 
 export default function TodoBody({ toggleTheme, theme, todos }) {
-    const { input, setInput, deadLine, addTodo, setDeadline } = todoStore(
-        (state) => state
-    )
+    const {
+        input,
+        setInput,
+        deadLine,
+        addTodo,
+        setDeadline,
+        setTodos,
+    } = todoStore((state) => state)
     const user = authStore((state) => state.user)
     const isLoggedIn = authStore((state) => state.isLoggedIn)
 
@@ -64,11 +74,13 @@ export default function TodoBody({ toggleTheme, theme, todos }) {
     }
     return (
         <div className={`App ${classes.todoContainer}`}>
-            <div>
-                {`hello ${user?.uid}`}
+            <div className={classes.logOut}>
                 <Button
+                    variant="outlined"
+                    color="secondary"
                     onClick={() => {
                         auth.signOut()
+                        setTodos([])
                     }}
                 >
                     Sign Out
@@ -140,7 +152,6 @@ export default function TodoBody({ toggleTheme, theme, todos }) {
                         </Box>
                     </div>
                 </form>
-
                 <ul className={classes.todoUl}>
                     {todos.map((todo) => (
                         <Todo key={todo.id} todo={todo} />

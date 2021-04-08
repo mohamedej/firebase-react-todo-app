@@ -29,11 +29,12 @@ function App({ toggleTheme, theme, setTheme }) {
                 id: doc.id,
                 ...doc.data(),
             }))
-            console.log(todos)
-            setTodos(todos)
+            const filterdTodos = todos.filter((todo) => todo.uid === user.uid)
+            setTodos(filterdTodos)
         })
+
         return unsubscribe
-    }, [setLoading, setLoggedIn, setTheme, setTodos, setUser])
+    }, [setLoading, setLoggedIn, setTheme, setTodos, setUser, user, user.uid])
 
     if (loading) {
         return <CircularProgress />

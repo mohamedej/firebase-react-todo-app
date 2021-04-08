@@ -13,7 +13,7 @@ import { todoStore } from '../../utils/todoStore'
 const Todo = ({ todo }) => {
     const [updateTodo, removeTodo] = todoStore((state) => [
         state.updateTodo,
-        state.removeTodo,
+        state.deleteTodo,
     ])
     const [input, setInput] = useState(todo.todo)
     const [open, setOpen] = useState(false)
@@ -70,7 +70,7 @@ const Todo = ({ todo }) => {
                     <Button
                         variant="contained"
                         color="secondary"
-                        onClick={(e) => {
+                        onClick={() => {
                             removeTodo(todo.id)
                         }}
                     >
